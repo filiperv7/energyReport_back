@@ -86,11 +86,14 @@ export class ProcessInvoiceService {
         fileName
       )
 
-      if (fileUploaded && fileUploaded.Location !== undefined)
+      if (fileUploaded && fileUploaded.Location !== undefined) {
+        invoiceData.invoice.path = fileUploaded.Location
+
         await this.updateInvoiceRepository.updateInvoiceWithPath(
           newInvoice.id,
           fileUploaded.Location
         )
+      }
 
       if (!fileUploaded) {
         await this.deleteInvoiceRepository.DeleteInvoice(newInvoice.id)
@@ -101,6 +104,8 @@ export class ProcessInvoiceService {
     if (invoiceExist) {
       invoiceData.invoice.path = invoiceExist.path!
       invoiceData.invoice.id = invoiceExist.id
+
+      return { message: 'Fatura já existia na nossa base!', data: invoiceData }
     }
 
     return { message: 'Sucesso ao fazer upload!', data: invoiceData }
