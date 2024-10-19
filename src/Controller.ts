@@ -1,13 +1,18 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from 'tsyringe'
+import { GetInvoicesByClientService } from './services/invoices/GetInvoicesByClientService'
 import { ProcessInvoiceService } from './services/invoices/ProcessInvoiceService'
 import { TransformInFileBuffer } from './services/shared/TransformInFileBuffer'
 
 export class Controller {
-  private invoiceUploadService: ProcessInvoiceService
+  private processInvoiceService: ProcessInvoiceService
+  private getInvoicesByClientService: GetInvoicesByClientService
 
   constructor() {
-    this.invoiceUploadService = container.resolve(ProcessInvoiceService)
+    this.processInvoiceService = container.resolve(ProcessInvoiceService)
+    this.getInvoicesByClientService = container.resolve(
+      GetInvoicesByClientService
+    )
   }
 
   async uploadInvoice(request: FastifyRequest, reply: FastifyReply) {
@@ -30,8 +35,19 @@ export class Controller {
     if (!fileBuffer)
       return reply.status(500).send({ message: 'Erro ao processar arquivo!' })
 
-    const data = await this.invoiceUploadService.processInvoice(fileBuffer)
+    const response = await this.processInvoiceService.processInvoice(fileBuffer)
 
-    return reply.status(200).send(data)
+    return reply.status(200).send(response)
+  }
+
+  async getInvoicesByClientNumber(
+    request: FastifyRequest<{ Params: GetInvoicesByClientDto }>,
+    reply: FastifyReply
+  ) {
+    const response = await this.getInvoicesByClientService.getInvoicesByClient(
+      request.params.client_number
+    )
+
+    return reply.status(200).send(response)
   }
 }
