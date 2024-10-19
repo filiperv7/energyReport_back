@@ -35,7 +35,11 @@ export class Controller {
     if (!fileBuffer)
       return reply.status(500).send({ message: 'Erro ao processar arquivo!' })
 
-    const response = await this.processInvoiceService.processInvoice(fileBuffer)
+    const response = await this.processInvoiceService.processInvoice(
+      fileBuffer,
+      file.file,
+      file.filename
+    )
 
     return reply.status(200).send(response)
   }

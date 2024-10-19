@@ -1,27 +1,37 @@
+import { Readable } from 'stream'
 import { container, injectable } from 'tsyringe'
 import { CreateClientRepository } from '../../repositories/clients/CreateClientRepository'
 import { FindClientRepository } from '../../repositories/clients/FindClientRepository'
 import { CreateInvoiceRepository } from '../../repositories/invoices/CreateInvoiceRepository'
+import { DeleteInvoiceRepository } from '../../repositories/invoices/DeleteInvoiceRepository'
 import { FindInvoiceRepository } from '../../repositories/invoices/FindInvoiceRepository'
+import { UpdateInvoiceRepository } from '../../repositories/invoices/UpdateInvoiceRepository'
 import { ExtractInvoiceService } from './ExtractInvoiceService'
+import { UploadInvoiceService } from './UploadInvoiceService'
 
 @injectable()
 export class ProcessInvoiceService {
   private processInvoiceService: ExtractInvoiceService
+  private uploadInvoiceService: UploadInvoiceService
   private findClientRepository: FindClientRepository
   private createClientRepository: CreateClientRepository
   private createInvoiceRepository: CreateInvoiceRepository
   private findInvoiceRepository: FindInvoiceRepository
+  private updateInvoiceRepository: UpdateInvoiceRepository
+  private deleteInvoiceRepository: DeleteInvoiceRepository
 
   constructor() {
     this.processInvoiceService = container.resolve(ExtractInvoiceService)
+    this.uploadInvoiceService = container.resolve(UploadInvoiceService)
     this.findClientRepository = container.resolve(FindClientRepository)
     this.createClientRepository = container.resolve(CreateClientRepository)
     this.createInvoiceRepository = container.resolve(CreateInvoiceRepository)
     this.findInvoiceRepository = container.resolve(FindInvoiceRepository)
+    this.updateInvoiceRepository = container.resolve(UpdateInvoiceRepository)
+    this.deleteInvoiceRepository = container.resolve(DeleteInvoiceRepository)
   }
 
-  async processInvoice(fileBuffer: Buffer) {
+  async processInvoice(fileBuffer: Buffer, file: Readable, fileName: string) {
     const invoiceData = await this.processInvoiceService.extractInvoice(
       fileBuffer
     )
@@ -67,12 +77,31 @@ export class ProcessInvoiceService {
         invoiceData.distributorName
       )
 
-      if (!newInvoice) return { message: 'Erro ao testar salvar arquivo!' }
+      if (!newInvoice) return { message: 'Erro ao tentar salvar arquivo!' }
 
       invoiceData.invoice.id = newInvoice.id
+
+      const fileUploaded = await this.uploadInvoiceService.upload(
+        file,
+        fileName
+      )
+
+      if (fileUploaded && fileUploaded.Location !== undefined)
+        await this.updateInvoiceRepository.updateInvoiceWithPath(
+          newInvoice.id,
+          fileUploaded.Location
+        )
+
+      if (!fileUploaded) {
+        await this.deleteInvoiceRepository.DeleteInvoice(newInvoice.id)
+        return { message: 'Erro ao tentar fazer upload do arquivo!' }
+      }
     }
 
-    if (invoiceExist) invoiceData.invoice.id = invoiceExist.id
+    if (invoiceExist) {
+      invoiceData.invoice.path = invoiceExist.path!
+      invoiceData.invoice.id = invoiceExist.id
+    }
 
     return { message: 'Sucesso ao fazer upload!', data: invoiceData }
   }

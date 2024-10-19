@@ -21,6 +21,7 @@ model invoices {
   month               String  @db.VarChar(5)
   year                Int
   distributor         String? @db.VarChar(100)
+  path                String?
 
   flag_color        String?
   amount_of_days    Int

@@ -13,4 +13,5 @@ export type InvoiceType = {
   amountOfDays: number
   refundOfPayment: number | null
   flagColor: string | null
+  path?: string
 }
