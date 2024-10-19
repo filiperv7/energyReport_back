@@ -1,5 +1,8 @@
 import PdfParse from 'pdf-parse'
 import { injectable } from 'tsyringe'
+import { ClientType } from '../../types/ClientType'
+import { ImportanteInvoiceDataType } from '../../types/ImportanteInvoiceDataType'
+import { InvoiceType } from '../../types/InvoiceType'
 
 @injectable()
 export class ExtractInvoiceService {
