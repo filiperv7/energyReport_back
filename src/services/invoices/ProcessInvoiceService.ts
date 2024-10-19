@@ -56,7 +56,8 @@ export class ProcessInvoiceService {
 
     const invoiceExist =
       await this.findInvoiceRepository.checkIfInvoiceAlreadyExists(
-        invoiceData.invoice
+        invoiceData.invoice,
+        idClient
       )
 
     if (!invoiceExist) {

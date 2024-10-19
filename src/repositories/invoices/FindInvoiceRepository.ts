@@ -10,12 +10,13 @@ export class FindInvoiceRepository {
     this.prisma = container.resolve(PrismaService)
   }
 
-  async checkIfInvoiceAlreadyExists(invoice: InvoiceType) {
+  async checkIfInvoiceAlreadyExists(invoice: InvoiceType, idClient: number) {
     try {
       const invoiceExist = await this.prisma.client.invoices.findFirst({
         where: {
           month: invoice.month,
-          year: invoice.year
+          year: invoice.year,
+          client: { id: idClient }
         }
       })
 
