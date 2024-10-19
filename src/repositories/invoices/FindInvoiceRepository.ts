@@ -38,6 +38,7 @@ export class FindInvoiceRepository {
           year: true,
           distributor: true,
           flag_color: true,
+          path: true,
 
           value_of_compensated_energy: true,
           value_of_electrical_energy: true,

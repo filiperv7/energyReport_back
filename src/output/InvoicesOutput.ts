@@ -12,7 +12,8 @@ export class InvoicesOutput {
       client_name: invoice.client.client_name,
       total: total,
       economy: invoice.value_of_compensated_energy,
-      flag_color: invoice.flag_color
+      flag_color: invoice.flag_color,
+      path: invoice.path
     }
   }
 }

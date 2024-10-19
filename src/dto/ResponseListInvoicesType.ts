@@ -6,4 +6,5 @@ export type ResponseListInvoicesType = {
   total: number
   economy: number
   flag_color: string
+  path: string
 }
