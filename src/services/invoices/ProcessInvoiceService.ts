@@ -26,6 +26,13 @@ export class ProcessInvoiceService {
       fileBuffer
     )
 
+    if (
+      !invoiceData ||
+      invoiceData.client.clientNumber == undefined ||
+      invoiceData.invoice.month == undefined
+    )
+      return { message: 'Erro ao extrair informações do arquivo!' }
+
     const clientExist =
       await this.findClientRepository.checkIfClientAlreadyExists(
         invoiceData.client.clientNumber
@@ -38,8 +45,7 @@ export class ProcessInvoiceService {
         invoiceData.client
       )
 
-      if (!newClient)
-        return { message: 'Erro ao tentar salvar Cliente!', data: {} }
+      if (!newClient) return { message: 'Erro ao tentar salvar Cliente!' }
 
       idClient = newClient.id
     }
@@ -60,8 +66,7 @@ export class ProcessInvoiceService {
         invoiceData.distributorName
       )
 
-      if (!newInvoice)
-        return { message: 'Erro ao testar salvar arquivo!', data: {} }
+      if (!newInvoice) return { message: 'Erro ao testar salvar arquivo!' }
 
       invoiceData.invoice.id = newInvoice.id
     }
