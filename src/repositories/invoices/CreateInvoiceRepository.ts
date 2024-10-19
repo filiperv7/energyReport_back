@@ -1,5 +1,6 @@
 import { container, injectable } from 'tsyringe'
 import { PrismaService } from '../../PrismaService'
+import { InvoiceType } from '../../types/InvoiceType'
 
 @injectable()
 export class CreateInvoiceRepository {

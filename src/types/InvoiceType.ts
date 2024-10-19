@@ -1,4 +1,4 @@
-type InvoiceType = {
+export type InvoiceType = {
   id?: number
   installationNumber: string
   month: string
