@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model clients {
+  id            Int    @id @default(autoincrement())
+  client_number String @db.VarChar(20)
+  client_name   String @db.VarChar(255)
+
+  invoices invoices[]
+}
+
+model invoices {
+  id                  Int     @id @default(autoincrement())
+  installation_number String  @db.VarChar(20)
+  month               String  @db.VarChar(5)
+  year                Int
+  distributor         String? @db.VarChar(100)
+
+  flag_color        String?
+  amount_of_days    Int
+  refund_of_payment Float?
+
+  amount_of_electrical_energy Int
+  value_of_electrical_energy  Float
+
+  amount_of_SCEE_energy Int
+  value_of_SCEE_energy  Float
+
+  amount_of_compensated_energy Int
+  value_of_compensated_energy  Float
+
+  municipal_public_lighting_contrib Float
+
+  id_client Int
+  client    clients? @relation(fields: [id_client], references: [id])
+
+  @@index([id_client], map: "fk_invoice_client")
+}
