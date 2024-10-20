@@ -160,8 +160,11 @@ export class ExtractInvoiceService {
   private extractRefundOfPayment(text: string): void {
     const regex = /Restituição de Pagamento\s+-?([\d.,]+)/
     const match = text.match(regex)
+
     if (match)
-      this.dataExtractFromInvoice.invoice.refundOfPayment = Number(match[1])
+      this.dataExtractFromInvoice.invoice.refundOfPayment = Number(
+        match[1].replace(',', '.')
+      )
   }
 
   private extractFlagColor(text: string): void {
