@@ -28,7 +28,7 @@ export class FindInvoiceRepository {
     }
   }
 
-  async getInvoicesByClientService(clientNumber: string) {
+  async getInvoicesByClient(clientNumber: string) {
     try {
       const invoices = await this.prisma.client.invoices.findMany({
         select: {
@@ -53,6 +53,42 @@ export class FindInvoiceRepository {
       })
 
       if (invoices) return invoices
+
+      return false
+    } catch {
+      return false
+    }
+  }
+
+  async getInvoiceById(id: number) {
+    try {
+      const invoice = await this.prisma.client.invoices.findUnique({
+        select: {
+          id: true,
+          client: true,
+          month: true,
+          year: true,
+          distributor: true,
+          flag_color: true,
+          installation_number: true,
+          path: true,
+
+          refund_of_payment: true,
+          value_of_compensated_energy: true,
+          amount_of_compensated_energy: true,
+          value_of_electrical_energy: true,
+          amount_of_electrical_energy: true,
+          value_of_SCEE_energy: true,
+          amount_of_SCEE_energy: true,
+          municipal_public_lighting_contrib: true,
+          amount_of_days: true
+        },
+        where: {
+          id: Number(id)
+        }
+      })
+
+      if (invoice) return invoice
 
       return false
     } catch {

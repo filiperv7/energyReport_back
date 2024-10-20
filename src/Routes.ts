@@ -10,4 +10,9 @@ export const registerRoutes = (app: FastifyInstance) => {
     (req: FastifyRequest<{ Params: GetInvoicesByClientDto }>, res) =>
       controller.getInvoicesByClientNumber(req, res)
   )
+  app.get(
+    '/invoice/:id_invoice/dashboard',
+    (req: FastifyRequest<{ Params: { id_invoice: number } }>, res) =>
+      controller.getDashboardData(req, res)
+  )
 }
