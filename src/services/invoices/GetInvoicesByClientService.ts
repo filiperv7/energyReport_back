@@ -14,8 +14,9 @@ export class GetInvoicesByClientService {
   }
 
   async getInvoicesByClient(clientNumber: string) {
-    const invoices =
-      await this.findInvoiceRepository.getInvoicesByClientService(clientNumber)
+    const invoices = await this.findInvoiceRepository.getInvoicesByClient(
+      clientNumber
+    )
 
     if (!invoices || invoices.length == 0)
       return { message: 'Nenhuma fatura encontrada!', invoices: {} }
@@ -33,7 +34,7 @@ export class GetInvoicesByClientService {
         )
 
         formattedInvoices.push(
-          this.out.GetInvoicesByClientOutput(invoice, total)
+          this.out.getInvoicesByClientOutput(invoice, total)
         )
       })
     )
