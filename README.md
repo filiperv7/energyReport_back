@@ -2,6 +2,8 @@
 
 Esta é uma aplicação Fastify e TypeScript; também utilizei Prisma, Amazon S3 e PostgresQL.
 
+Acesse a aplicação online [clicando aqui](https://energy-report-front.vercel.app/).
+
 #### Aqui está o [Front-end](https://github.com/filiperv7/energyReport_front) desta aplicação.
 
 
