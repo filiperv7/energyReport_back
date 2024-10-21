@@ -1,4 +1,5 @@
 import { container, injectable } from 'tsyringe'
+import { ResponseInvoiceDetailType } from '../../dto/ResponseInvoiceDatailType'
 import { InvoicesOutput } from '../../output/InvoicesOutput'
 import { FindInvoiceRepository } from '../../repositories/invoices/FindInvoiceRepository'
 
@@ -17,7 +18,9 @@ export class DashboardService {
       idInvoice
     )
 
-    let dashboardData = {}
+    let dashboardData: ResponseInvoiceDetailType =
+      {} as ResponseInvoiceDetailType
+
     if (dashboardToData) {
       const totalWithoutGD = parseFloat(
         (

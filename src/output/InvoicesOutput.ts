@@ -1,3 +1,4 @@
+import { ResponseInvoiceDetailType } from '../dto/ResponseInvoiceDatailType'
 import { ResponseListInvoicesType } from '../dto/ResponseListInvoicesType'
 
 export class InvoicesOutput {
@@ -24,7 +25,7 @@ export class InvoicesOutput {
     electricityConsumption: number,
     averageDailySpeding: number,
     averageDailySpedingInReais: number
-  ) {
+  ): ResponseInvoiceDetailType {
     return {
       id: invoice.id,
       reference_date: `${invoice.month}/${invoice.year}`,
