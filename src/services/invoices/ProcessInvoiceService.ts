@@ -1,4 +1,3 @@
-import { Readable } from 'stream'
 import { container, injectable } from 'tsyringe'
 import { CreateClientRepository } from '../../repositories/clients/CreateClientRepository'
 import { FindClientRepository } from '../../repositories/clients/FindClientRepository'
@@ -31,7 +30,7 @@ export class ProcessInvoiceService {
     this.deleteInvoiceRepository = container.resolve(DeleteInvoiceRepository)
   }
 
-  async processInvoice(fileBuffer: Buffer, file: Readable, fileName: string) {
+  async processInvoice(fileBuffer: Buffer, fileName: string) {
     const invoiceData = await this.processInvoiceService.extractInvoice(
       fileBuffer
     )
@@ -82,7 +81,7 @@ export class ProcessInvoiceService {
       invoiceData.invoice.id = newInvoice.id
 
       const fileUploaded = await this.uploadInvoiceService.upload(
-        file,
+        fileBuffer,
         fileName
       )
 

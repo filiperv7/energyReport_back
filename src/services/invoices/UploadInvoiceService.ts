@@ -1,18 +1,17 @@
 import { Upload } from '@aws-sdk/lib-storage'
 import crypto from 'crypto'
-import { Readable } from 'stream'
 import { injectable } from 'tsyringe'
 import { s3 } from '../../aws-config'
 
 @injectable()
 export class UploadInvoiceService {
-  async upload(file: Readable, originalName: string) {
+  async upload(fileBuffer: Buffer, originalName: string) {
     const fileName = this.generateFileName(originalName)
 
     const params = {
       Bucket: process.env.AWS_BUCKET_NAME || 'energyreportfilipe',
       Key: `invoices/${fileName}`,
-      Body: file,
+      Body: fileBuffer,
       ContentType: 'application/pdf'
     }
 

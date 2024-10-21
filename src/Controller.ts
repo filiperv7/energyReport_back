@@ -40,7 +40,6 @@ export class Controller {
 
     const response = await this.processInvoiceService.processInvoice(
       fileBuffer,
-      file.file,
       file.filename
     )
 
