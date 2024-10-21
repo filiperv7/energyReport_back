@@ -2,10 +2,13 @@
   "name": "energyreport_back",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "20.17"
+  },
   "scripts": {
     "dev": "tsx --watch src/server.ts",
-    "build": "tsup src",
-    "start": "node dist/server.js"
+    "build": "tsup src/Server.ts --format cjs --out-dir dist",
+    "start": "node dist/Server.js"
   },
   "keywords": [],
   "author": "",
