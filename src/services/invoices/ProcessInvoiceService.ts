@@ -31,6 +31,8 @@ export class ProcessInvoiceService {
   }
 
   async processInvoice(fileBuffer: Buffer, fileName: string) {
+    const enableS3Upload = process.env.ENABLE_S3_UPLOAD ?? 'false'
+
     const invoiceData = await this.processInvoiceService.extractInvoice(
       fileBuffer
     )
@@ -80,23 +82,26 @@ export class ProcessInvoiceService {
 
       invoiceData.invoice.id = newInvoice.id
 
-      const fileUploaded = await this.uploadInvoiceService.upload(
-        fileBuffer,
-        fileName
-      )
-
-      if (fileUploaded && fileUploaded.Location !== undefined) {
-        invoiceData.invoice.path = fileUploaded.Location
-
-        await this.updateInvoiceRepository.updateInvoiceWithPath(
-          newInvoice.id,
-          fileUploaded.Location
+      let fileUploaded
+      if (enableS3Upload === 'true') {
+        fileUploaded = await this.uploadInvoiceService.upload(
+          fileBuffer,
+          fileName
         )
-      }
 
-      if (!fileUploaded) {
-        await this.deleteInvoiceRepository.DeleteInvoice(newInvoice.id)
-        return { message: 'Erro ao tentar fazer upload do arquivo!' }
+        if (fileUploaded && fileUploaded.Location !== undefined) {
+          invoiceData.invoice.path = fileUploaded.Location
+
+          await this.updateInvoiceRepository.updateInvoiceWithPath(
+            newInvoice.id,
+            fileUploaded.Location
+          )
+        }
+
+        if (!fileUploaded) {
+          await this.deleteInvoiceRepository.DeleteInvoice(newInvoice.id)
+          return { message: 'Erro ao tentar fazer upload do arquivo!' }
+        }
       }
     }
 
