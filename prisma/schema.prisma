@@ -23,9 +23,10 @@ model invoices {
   distributor         String? @db.VarChar(100)
   path                String?
 
-  flag_color        String?
-  amount_of_days    Int
-  refund_of_payment Float?
+  flag_color           String?
+  amount_of_days       Int
+  refund_of_payment    Float?
+  damage_reimbursement Float?
 
   amount_of_electrical_energy Int
   value_of_electrical_energy  Float

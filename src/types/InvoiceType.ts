@@ -10,6 +10,7 @@ export type InvoiceType = {
   amountOfCompensatedEnergy: number
   valueOfCompensatedEnergy: number
   municipalPublicLightingContrib: number
+  damageReimbursement: number
   amountOfDays: number
   refundOfPayment: number | null
   flagColor: string | null

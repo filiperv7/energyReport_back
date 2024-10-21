@@ -33,7 +33,8 @@ export class DashboardService {
           dashboardToData.value_of_SCEE_energy +
           dashboardToData.municipal_public_lighting_contrib -
           dashboardToData.value_of_compensated_energy -
-          (dashboardToData.refund_of_payment ?? 0)
+          (dashboardToData.refund_of_payment ?? 0) -
+          (dashboardToData.damage_reimbursement ?? 0)
         ).toFixed(2)
       )
 

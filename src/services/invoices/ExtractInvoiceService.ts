@@ -41,6 +41,7 @@ export class ExtractInvoiceService {
         this.extractClientName(text)
         this.extractRefundOfPayment(text)
         this.extractFlagColor(text)
+        this.extractDamageReimbursement(text)
         this.extractDays(text)
 
         resolve(this.dataExtractFromInvoice)
@@ -179,6 +180,17 @@ export class ExtractInvoiceService {
       }
 
       this.dataExtractFromInvoice.invoice.flagColor = colorMap[match[1]]
+    }
+  }
+
+  private extractDamageReimbursement(text: string): void {
+    const regex = /Ressarcimento de Danos\s+-?([\d.,]+)/
+    const match = text.match(regex)
+
+    if (match) {
+      this.dataExtractFromInvoice.invoice.damageReimbursement = Number(
+        match[1].replace(',', '.')
+      )
     }
   }
 }

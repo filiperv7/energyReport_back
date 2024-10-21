@@ -74,6 +74,7 @@ export class FindInvoiceRepository {
           path: true,
 
           refund_of_payment: true,
+          damage_reimbursement: true,
           value_of_compensated_energy: true,
           amount_of_compensated_energy: true,
           value_of_electrical_energy: true,

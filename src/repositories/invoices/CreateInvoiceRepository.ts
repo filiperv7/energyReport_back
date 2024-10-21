@@ -27,6 +27,7 @@ export class CreateInvoiceRepository {
           municipal_public_lighting_contrib:
             invoice.municipalPublicLightingContrib,
           refund_of_payment: invoice.refundOfPayment,
+          damage_reimbursement: invoice.damageReimbursement,
 
           amount_of_days: invoice.amountOfDays,
           amount_of_compensated_energy: invoice.amountOfCompensatedEnergy,
